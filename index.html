@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Spicy List - Creator Directory</title>
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f9f9f9;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        /* Header Styles */
+        header {
+            background-color: #000000 !important;
+            color: white;
+            padding: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: white;
+        }
+
+        .logo span {
+            color: #b82222; /* Slightly darker red */
+            text-shadow: 0 0 1px rgba(255,255,255,0.2); /* Light shadow for definition */
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        nav ul li a:hover {
+            color: #e8daef;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        /* Filter Section Styles */
+        .search-section {
+            background-color: #e8daef;
+            padding: 2rem 1rem;
+        }
+
+        .search-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .filter-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .filter-tag {
+            background-color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #ddd;
+        }
+
+        .filter-tag:hover, .filter-tag.active {
+            background-color: #000000;
+            color: white;
+            border-color: #000000;
+        }
+
+        /* Main Content Styles */
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        .section-title {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            color: #333;
+            border-bottom: 2px solid #8e44ad;
+            padding-bottom: 0.5rem;
+            display: block;
+            text-align: center;
+            width: 100%;
+        }
+
+        .section-title .emoji {
+            margin-left: 0.2rem;
+        }
+
+        /* Creator Grid Styles */
+        .creator-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+        }
+
+        .creator-card {
+            background-color: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .creator-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .creator-img {
+            width: 100%;
+            height: 220px;
+            object-fit: cover;
+        }
+
+        .creator-info {
+            padding: 1.2rem;
+        }
+
+        .creator-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .creator-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .creator-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .creator-rating {
+            color: #ffc107;
+        }
+
+        .creator-badge {
+            background-color: #c4a7da; /* Even softer lavender purple */
+            color: #333; /* Darker text for better contrast on light background */
+            font-size: 0.7rem;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            margin-left: 0.5rem;
+            white-space: nowrap;
+            display: inline-flex;
+            align-items: center;
+            font-weight: 600;
+        }
+        
+        .creator-badge .badge-emoji {
+            margin-right: 0.2rem;
+        }
+
+        .creator-category {
+            background-color: #8e44ad; /* Changed from black to purple to match other buttons */
+            color: white;
+            font-size: 0.8rem;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+        }
+
+        .creator-btn {
+            width: 100%;
+            background-color: #8e44ad;
+            color: white;
+            border: none;
+            padding: 0.8rem;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .creator-btn:hover {
+            background-color: #76368c;
+        }
+
+        /* Footer Styles */
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 1.5rem 1rem;
+            margin-top: 2rem;
+        }
+
+        .footer-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .footer-column h3 {
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.4rem;
+            font-size: 0.9rem;
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 2rem auto 0;
+            padding-top: 1.5rem;
+            border-top: 1px solid #555;
+            text-align: center;
+            font-size: 0.9rem;
+        }
+
+        /* Responsive Styles */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            /* Show mobile menu when the class is added via JS */
+            nav.mobile-active ul {
+                display: flex;
+                flex-direction: column;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: #000000;
+                padding: 1rem;
+            }
+
+            nav.mobile-active ul li {
+                margin: 0.5rem 0;
+            }
+
+            .creator-grid {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+        }
+
+        @media (max-width: 480px) {
+            .creator-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header with Navigation -->
+    <header>
+        <div class="header-container">
+            <a href="index.html" class="logo">The<span>Spicy</span>List</a>
+            <nav>
+                <button class="mobile-menu-btn">☰</button>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="categories.html">Categories</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="about.html">About</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Filter Section -->
+    <section class="search-section">
+        <div class="search-container">
+            <div class="filter-container">
+                <div class="filter-tag active">All</div>
+                <div class="filter-tag">Couples</div>
+                <div class="filter-tag">Latina</div>
+                <div class="filter-tag">Cosplay</div>
+                <div class="filter-tag">Fitness</div>
+                <div class="filter-tag">ASMR</div>
+                <div class="filter-tag">Model</div>
+                <div class="filter-tag">Cooking</div>
+                <div class="filter-tag">Gaming</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main>
+        <h2 class="section-title">This Month's Hottest Creators <span class="emoji">🔥</span></h2>
+        <div class="creator-grid">
+            <!-- Creator Card 1 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">Sofia Valentina</h3>
+                    <p class="creator-description">Lifestyle model sharing daily content and exclusive photoshoots with subscribers.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★★ <span class="creator-badge"><span class="badge-emoji">🔥</span>Hottest Right Now</span></div>
+                        <div class="creator-category">Latina</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 2 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">CosplayCouple</h3>
+                    <p class="creator-description">We bring your favorite characters to life with our detailed costumes and creative photoshoots.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★☆ <span class="creator-badge"><span class="badge-emoji">👑</span>Creator of the Month</span></div>
+                        <div class="creator-category">Couples</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 3 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">FitWithJamie</h3>
+                    <p class="creator-description">Personal trainer sharing workout routines, meal plans, and fitness motivation.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★★ <span class="creator-badge"><span class="badge-emoji">⭐</span>Top Rated</span></div>
+                        <div class="creator-category">Fitness</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 4 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">ElvishCosplayer</h3>
+                    <p class="creator-description">Specializing in fantasy and elf cosplays with detailed costume work and immersive photoshoots.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★☆</div>
+                        <div class="creator-category">Cosplay</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 5 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">WhisperASMR</h3>
+                    <p class="creator-description">Creating relaxing ASMR content with high-quality audio and personal attention roleplay.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★★ <span class="creator-badge"><span class="badge-emoji">🚀</span>Trending</span></div>
+                        <div class="creator-category">ASMR</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 6 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">GamerGirl</h3>
+                    <p class="creator-description">Daily gaming streams, tutorials, and behind-the-scenes content for my dedicated subscribers.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★☆☆</div>
+                        <div class="creator-category">Gaming</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 7 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">ChefMelanie</h3>
+                    <p class="creator-description">Professional chef sharing exclusive recipes, cooking techniques, and culinary adventures.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★★</div>
+                        <div class="creator-category">Cooking</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+
+            <!-- Creator Card 8 -->
+            <div class="creator-card">
+                <img src="/api/placeholder/400/320" alt="Creator" class="creator-img">
+                <div class="creator-info">
+                    <h3 class="creator-name">MusicProducer</h3>
+                    <p class="creator-description">Sharing original tracks, music production tutorials, and behind-the-scenes studio content.</p>
+                    <div class="creator-meta">
+                        <div class="creator-rating">★★★★☆</div>
+                        <div class="creator-category">Music</div>
+                    </div>
+                    <button class="creator-btn">View Profile</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-container">
+            <div class="footer-column">
+                <h3>Company</h3>
+                <ul>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Careers</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Support</h3>
+                <ul>
+                    <li><a href="contact.html">Help Center</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Legal</h3>
+                <ul>
+                    <li><a href="terms-of-service.html">Terms of Service</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 The Spicy List. All Rights Reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const nav = document.querySelector('nav');
+        
+        mobileMenuBtn.addEventListener('click', () => {
+            nav.classList.toggle('mobile-active');
+        });
+
+        // Filter tags functionality
+        const filterTags = document.querySelectorAll('.filter-tag');
+        
+        filterTags.forEach(tag => {
+            tag.addEventListener('click', () => {
+                // Remove active class from all tags
+                filterTags.forEach(t => t.classList.remove('active'));
+                // Add active class to clicked tag
+                tag.classList.add('active');
+                
+                // Get the selected category
+                const category = tag.textContent.trim();
+                
+                // Get all creator cards
+                const creatorCards = document.querySelectorAll('.creator-card');
+                
+                // Show all cards if "All" is selected, otherwise filter by category
+                creatorCards.forEach(card => {
+                    const cardCategory = card.querySelector('.creator-category').textContent.trim();
+                    
+                    if (category === 'All' || category === cardCategory) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+
+        // Update all View Profile buttons to link to the creator profile page
+        const creatorButtons = document.querySelectorAll('.creator-btn');
+        
+        creatorButtons.forEach(button => {
+            button.addEventListener('click', function() {
+                window.location.href = 'creator-profiles.html';
+            });
+        });
+    </script>
+</body>
+</html>
